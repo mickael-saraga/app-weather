@@ -1,0 +1,45 @@
+<div class="card mb-3">
+  <div class="card-header">
+    Ajouter une prévision météo
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Entrer un code postal</h5>
+    <form #f="ngForm" (ngSubmit)="onSubmit()">
+      <div class="input-group mb-3 d-flex align-items-center">
+        <input type="text" placeholder="code..."
+          id="zipcode-input"
+          name="zipcode-input"
+          #zipCode="ngModel"
+          [(ngModel)]="zipCodeValue"
+          required
+          class="form-control">
+          <!-- [class.is-invalid]="zipCode.touched && zipCode.invalid" -->
+          <!-- [class.is-valid]="zipCode.touched && zipCode.valid" -->
+        <button class="btn btn-outline-secondary" type="button"
+          id="add-zipcode-button"
+          [disabled]="!f.form.valid"
+          (click)="addZipCode()">
+          Ajouter
+        </button>
+        <button type="button" class="btn close clear-button ml-2" aria-label="Clear"
+          title="Effacer la liste"
+          (click)="clearLocationInput()">
+          <span aria-hidden="true">&circlearrowleft;</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="d-flex p-2 bd-highlight justify-content-center remove-all">
+  <button type="button" class="btn btn-warning"
+    (click)="removeAllLocations()">
+    Supprimer toutes les prévisions
+  </button>
+</div>
+
+<locations *ngIf="allZipCodes.length"
+  [zipCodes]="allZipCodes"
+  (locationAdded)="onLocationAdded($event)"
+  (locationRemoved)="onLocationRemoved($event)">
+</locations>

@@ -1,0 +1,31 @@
+<div *ngIf="location" class="d-flex justify-content-between align-items-stretch">
+  <div>
+    <div class="font-weight-bold mb-2">
+      <span>{{ location.name }}</span> &nbsp; <span>({{ location.zipCode }})</span>
+    </div>
+    <div>
+      <div *ngIf="location.temp">
+        <span>Température : {{ location.temp }} °C</span>
+        <span *ngIf="location.tempMin && location.tempMax" class="font-italic ml-3 font-size-6">
+          ( min: {{location.tempMin}} °C -- max:  {{location.tempMax}} °C )
+        </span>
+      </div>
+      <div *ngIf="location.feelsLike">Température ressentie : {{ location.feelsLike }} °C</div>
+    </div>
+    <div *ngIf="location.weatherDescription">
+      Conditions météo : {{ location.weatherDescription }}
+    </div>
+  </div>
+  <div class="d-flex align-items-center">
+    <weather-icon
+      [iconHeight]="80"
+      [weatherMain]="location.weatherMain"
+      [iconId]="location.weatherIcon">
+    </weather-icon>
+  </div>
+  <div>
+    <button type="button" class="btn-close btn-close-white btn-outline-secondary" aria-label="Close"
+      (click)="removeLocation(location.zipCode)">
+    </button>
+  </div>
+</div>

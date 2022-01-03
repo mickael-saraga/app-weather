@@ -1,0 +1,18 @@
+<div *ngIf="loading"
+    class="d-flex align-items-center justify-content-center m-5">
+    <div class="spinner spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+<div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let location of locations"
+      [class.list-group-item-action]="location.zipCode"
+      (click)="location.zipCode && openLocationWeek(location)">
+      <location *ngIf="location && location.zipCode"
+        [location]="location"
+        (removeLocationAsked)="onRemoveLocationAsked($event)">
+      </location>
+    </li>
+  </ul>
+</div>
