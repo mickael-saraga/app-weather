@@ -24,7 +24,13 @@
     </weather-icon>
   </div>
   <div>
-    <button type="button" class="btn-close btn-close-white btn-outline-secondary" aria-label="Close"
+    <!-- <button type="button" aria-label="Close"
+      class="btn-close btn-close-white btn-outline-secondary"
+      (click)="removeLocation(location.zipCode)">
+    </button> -->
+    <button type="button" aria-label="Remove"
+      title="Supprimer la ville"
+      class="btn btn-outline-secondary bi bi-trash-fill"
       (click)="removeLocation(location.zipCode)">
     </button>
   </div>
