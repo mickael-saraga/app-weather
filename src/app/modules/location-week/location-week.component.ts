@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { switchMap } from "rxjs/operators";
 import { environment } from "../../../environments/environment";
-import { WeatherWeekResponse } from "../../models/weather-week-response.model";
+import { WeatherWeekDailyResponse, WeatherWeekResponse } from "../../models/weather-week-response.model";
 import { WeatherService } from "../../services/weather.service";
 
 @Component({
@@ -13,7 +13,7 @@ import { WeatherService } from "../../services/weather.service";
 export class LocationWeekComponent implements OnInit {
   locationZipCode: string | null = '';
   locationName: string | null = '';
-  locationWeekDays: any[] = [];
+  locationWeekDays: WeatherWeekDailyResponse[] = [];
   loading: boolean = false;
 
   constructor(private weatherService: WeatherService,

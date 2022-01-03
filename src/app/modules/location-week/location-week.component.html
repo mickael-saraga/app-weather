@@ -23,12 +23,13 @@
             <!-- &nbsp; -->
             <em>( min: {{ day.temp.min }}°C -- max: {{ day.temp.max }}°C )</em>
           </div>
-          <div class="d-flex align-items-center">
+          <div class="weather-icon d-flex flex-column align-items-center">
             <weather-icon
-              [iconHeight]="45"
-              [weatherMain]="day.weather[0].main"
               [iconId]="day.weather[0].icon"
-            ></weather-icon>
+              [weatherMain]="day.weather[0].main"
+              [iconHeight]="45">
+            </weather-icon>
+            <span>{{ day.weather[0].description }}</span>
           </div>
         </ng-container>
       </li>
