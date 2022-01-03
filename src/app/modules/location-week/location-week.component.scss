@@ -2,12 +2,16 @@
   padding: 5px 15px;
 }
 
-.header-title {
-  font-size: 17px;
+.header-title h5 {
+  margin-bottom: 0;
 }
 
 .card-body {
   background-color: rgba(0, 0, 0, 0.03);
+}
+
+.day {
+  font-size: 15px;
 }
 
 .weather-icon {
