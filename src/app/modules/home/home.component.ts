@@ -34,10 +34,7 @@ export class HomeComponent implements OnInit {
   }
 
   addLocationZipCode() {
-    if (this.zipCodeValue && this.zipCodeValue.length && this.allZipCodes.indexOf(this.zipCodeValue) === -1) {
-      this.weatherService.submitLocationZipCode(this.zipCodeValue);
-    }
-    this.clearLocationInput();
+    this.onSubmit();
   }
 
   onLocationAdded(zipCode: string) {
@@ -47,11 +44,16 @@ export class HomeComponent implements OnInit {
 
   clearLocationInput() {
     this.zipCodeValue = '';
+    this.submitted = false;
   }
 
 
   onSubmit() {
     this.submitted = true;
+    if (this.zipCodeValue && this.zipCodeValue.length && this.allZipCodes.indexOf(this.zipCodeValue) === -1) {
+      this.weatherService.submitLocationZipCode(this.zipCodeValue);
+    }
+    this.clearLocationInput();
   }
 
   removeLocation(locationToRemove: Location) {
