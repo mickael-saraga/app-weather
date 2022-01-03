@@ -21,25 +21,21 @@ export class LocationsComponent implements OnInit, OnDestroy {
   loading: boolean = false;
 
   constructor(private service: WeatherService,
-              private router: Router) {
-    this.locationAdditionSubscription = this.service.locationToAdd$.subscribe((newZipCode) => {
-      service.getLocationForecastData(newZipCode).subscribe((locationResponse) => {
-        if (locationResponse) {
-          this.locations.push(service.buildLocation(newZipCode, locationResponse));
-          this.locationAdded.emit(newZipCode);
-        }
-      });
-    });
-  }
+              private router: Router) { }
 
   ngOnInit() {
       if (this.zipCodes) {
         this.loading = true;
         this.buildAllLocations();
       }
-      // this.service.locationToAdd$.subscribe((newZipCode) => {
-      //   console.log(newZipCode);
-      // });
+      this.locationAdditionSubscription = this.service.locationToAdd$.subscribe((newZipCode) => {
+        this.service.getLocationForecastData(newZipCode).subscribe((locationResponse) => {
+          if (locationResponse) {
+            this.locations.unshift(this.service.buildLocation(newZipCode, locationResponse));
+            this.locationAdded.emit(newZipCode);
+          }
+        });
+      });
   }
 
   buildAllLocations() {

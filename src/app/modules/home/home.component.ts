@@ -33,19 +33,16 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  addZipCode() {
+  addLocationZipCode() {
     if (this.zipCodeValue && this.zipCodeValue.length && this.allZipCodes.indexOf(this.zipCodeValue) === -1) {
-      // this.allZipCodes.push(this.zipCodeValue);
-      this.allZipCodes = this.allZipCodes.concat([this.zipCodeValue]);
       this.weatherService.submitLocationZipCode(this.zipCodeValue);
-      localStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
     }
     this.clearLocationInput();
   }
 
   onLocationAdded(zipCode: string) {
-    // this.allZipCodes.push(zipCode);
-    // localStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
+    this.allZipCodes.unshift(zipCode);
+    localStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
   }
 
   clearLocationInput() {
@@ -69,9 +66,13 @@ export class HomeComponent implements OnInit {
     this.locations = [];
   }
 
-  onLocationRemoved(zipCode: number) {
-    this.allZipCodes = this.allZipCodes.filter((code: string) => +code !== zipCode);
-    localStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
+  onLocationRemoved(zipCodeToRemove: number) {
+    // this.allZipCodes = this.allZipCodes.filter((code: string) => +code !== zipCodeToRemove);
+    const foundIndex = this.allZipCodes.findIndex((zipCode: string) => zipCodeToRemove === +zipCode);
+    if (foundIndex > -1) {
+      this.allZipCodes.splice(foundIndex, 1);
+      localStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
+    }
   }
 
 }
