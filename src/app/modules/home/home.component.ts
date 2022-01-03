@@ -24,7 +24,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     const storedZipCodesString = localStorage.getItem(this.zipCodesKey);
     if (storedZipCodesString) {
-      console.log('stored zipcodes', storedZipCodesString.split(','));
       const storedZipCodes = storedZipCodesString.split(',');
       if (storedZipCodes.filter(code => code.length).length) {
         this.allZipCodes = storedZipCodes;

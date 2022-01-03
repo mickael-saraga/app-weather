@@ -47,7 +47,6 @@ export class LocationsComponent implements OnInit, OnDestroy {
       this.zipCodes.map((code) => this.service.getLocationForecastData(code))
     ).subscribe(
       (weatherLocationsResponses: (WeatherResponse | null)[]) => {
-        console.log(weatherLocationsResponses);
         weatherLocationsResponses.forEach((weatherResponse) => {
           if (weatherResponse) {
             this.locations.push(this.service.buildLocation(weatherResponse.zip, weatherResponse));
