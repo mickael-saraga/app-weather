@@ -1,5 +1,4 @@
 export class LocationWeatherBuilder {
-
     // public zipCode: number = 0;
     private name: string = '';
     private temp: number = 0;
@@ -78,11 +77,8 @@ export class LocationWeatherBuilder {
     this.feelsLike = feelsLike;
     return this;
   }
-
   
-
   build(): Location {
     return new Location();
   }
-
 }

@@ -1,6 +1,10 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
+body {
+  overflow: hidden;
+}
+
 home {
   width: 100%;
   max-width: 650px;

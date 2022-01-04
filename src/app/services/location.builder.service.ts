@@ -6,7 +6,6 @@ import { WeatherResponse } from "../models/weather-response.model";
   providedIn: 'root'
 })
 export class LocationBuilder {
-
   private readonly location: Location;
 
   constructor() {
@@ -24,7 +23,6 @@ export class LocationBuilder {
     // };
     this.location = new Location(0);
   }
-
   
   public zipCode(zipCode: number): LocationBuilder {
     this.location.zipCode = zipCode;
@@ -93,5 +91,4 @@ export class LocationBuilder {
   build(): Location {
     return this.location;
   }
-
 }

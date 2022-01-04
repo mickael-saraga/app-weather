@@ -5,36 +5,31 @@
   <div class="card-body">
     <h5 class="card-title">Entrer un code postal</h5>
     <form #f="ngForm" (ngSubmit)="onSubmit()">
-      <div class="input-group mb-3 d-flex align-items-center">
-        <input type="number" placeholder=". . ."
+      <div class="input-group d-flex align-items-center">
+        <!-- <input type="number" placeholder=". . ."
+          id="zipcode-input"
+          name="zipcode-input"
+          #zipCode="ngModel"
+          [(ngModel)]="zipCodeValue"
+          required
+          class="form-control"> -->
+        <input type="text" (keypress)="allowOnlyNumbers($event)"
+          placeholder=". . ."
           id="zipcode-input"
           name="zipcode-input"
           #zipCode="ngModel"
           [(ngModel)]="zipCodeValue"
           required
           class="form-control">
-          <!-- [class.is-invalid]="zipCode.touched && zipCode.invalid" -->
-          <!-- [class.is-valid]="zipCode.touched && zipCode.valid" -->
-          <!-- <button type="button" aria-label="Clear"
-            class="btn btn-outline-secondary"
-            [disabled]="zipCodeValue.length === 0"
-            (click)="clearLocationInput()">
-            <i class="bi bi-x-lg"></i>
-          </button> -->
-        <button class="btn btn-outline-secondary" type="button"
+        <button type="button" class="btn btn-primary bi bi-plus-lg"
+          title="Ajouter"
           id="add-zipcode-button"
           [disabled]="!f.form.valid"
           (click)="addLocationZipCode()">
-          Ajouter
         </button>
-        <!-- <button type="button" class="btn btn-secondary ml-2" aria-label="Clear"
-          title="Effacer le code postal"
-          (click)="clearLocationInput()">
-          <span aria-hidden="true">&circlearrowleft;</span>
-        </button> -->
         <button type="button" aria-label="Clear"
-          title="Effacer le code postal"
-          class="btn btn-outline-secondary bi bi-eraser btn-close ml-2"
+          title="Effacer"
+          class="btn btn-outline-secondary bi bi-eraser-fill btn-close ml-2"
           [disabled]="zipCodeValue.length === 0"
           (click)="clearLocationInput()">
         </button>

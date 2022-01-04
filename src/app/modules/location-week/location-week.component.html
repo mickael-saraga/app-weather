@@ -1,9 +1,12 @@
 <div class="card mb-3">
   <div class="card-header d-flex align-items-center">
-    <button type="button" class="btn btn-outline-secondary mr-3" (click)="back()">Retour</button>
-      <div class="header-title">
-        <h5>{{ locationName }} ({{ locationZipCode }})</h5>
-      </div>
+    <button type="button" class="btn btn-outline-secondary mr-3 bi bi-arrow-90deg-left"
+      title="Retour"
+      (click)="back()">
+    </button>
+    <div class="header-title">
+      <h5>{{ locationName }} ({{ locationZipCode }})</h5>
+    </div>
   </div>
   <div *ngIf="loading"
     class="d-flex align-items-center justify-content-center m-5">
@@ -12,20 +15,19 @@
     </div>
   </div>
   <div class="card-body">
-    <ul *ngIf="locationWeekDays"
-      class="list-group list-group-flush">
+    <ul *ngIf="locationWeekDays" class="list-group">
       <li *ngFor="let day of locationWeekDays"
         class="list-group-item d-flex align-items-center justify-content-between">
         <ng-container *ngIf="day">
           <div *ngIf="day.temp" class="d-flex flex-column">
             <span class="day">{{ (day.dt * 1000 | date: 'EEEE d MMMM' : '+0200' : 'fr') | titlecase }}</span>
-            <em>( min: {{ day.temp.min }}°C -- max: {{ day.temp.max }}°C )</em>
+            <span class="temperature">min: {{ day.temp.min }}°C -- max: {{ day.temp.max }}°C</span>
           </div>
           <div class="weather-icon d-flex flex-column align-items-center">
             <weather-icon
               [iconId]="day.weather[0].icon"
               [weatherMain]="day.weather[0].main"
-              [iconHeight]="45">
+              [iconHeight]="35">
             </weather-icon>
             <span>{{ day.weather[0].description }}</span>
           </div>

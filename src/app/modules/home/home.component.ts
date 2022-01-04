@@ -77,4 +77,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  allowOnlyNumbers(event: KeyboardEvent): boolean {
+    const numericPattern = /^([0-9])$/;
+    if (event.key === 'Enter' && this.zipCodeValue) {
+      return true;
+    } else {
+      return numericPattern.test(event.key);
+    }
+  }
+
 }

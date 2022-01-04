@@ -10,28 +10,26 @@
           ( min: {{location.tempMin}} °C -- max:  {{location.tempMax}} °C )
         </span>
       </div>
-      <div *ngIf="location.feelsLike">Température ressentie : {{ location.feelsLike }} °C</div>
+      <div *ngIf="location.feelsLike">ressentie : {{ location.feelsLike }} °C</div>
     </div>
     <div *ngIf="location.weatherDescription">
       Conditions météo : {{ location.weatherDescription }}
     </div>
   </div>
-  <div class="d-flex align-items-center">
-    <weather-icon
-      [iconHeight]="80"
-      [weatherMain]="location.weatherMain"
-      [iconId]="location.weatherIcon">
-    </weather-icon>
-  </div>
-  <div>
-    <!-- <button type="button" aria-label="Close"
-      class="btn-close btn-close-white btn-outline-secondary"
-      (click)="removeLocation(location.zipCode)">
-    </button> -->
-    <button type="button" aria-label="Remove"
-      title="Supprimer la ville"
-      class="btn btn-outline-secondary bi bi-trash-fill"
-      (click)="removeLocation(location.zipCode)">
-    </button>
+  <div class="d-flex flex-direction-column icon-container ml-3">
+    <div class="d-flex align-items-center">
+      <weather-icon
+        [iconHeight]="80"
+        [weatherMain]="location.weatherMain"
+        [iconId]="location.weatherIcon">
+      </weather-icon>
+    </div>
+    <div>
+      <button type="button" aria-label="Remove"
+        title="Supprimer la ville"
+        class="btn btn-outline-secondary btn-sm bi bi-x-lg"
+        (click)="removeLocation(location.zipCode)">
+      </button>
+    </div>
   </div>
 </div>
