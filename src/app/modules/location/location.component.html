@@ -24,11 +24,16 @@
         [iconId]="location.weatherIcon">
       </weather-icon>
     </div>
-    <div>
+    <div class="d-flex flex-column justify-content-between">
       <button type="button" aria-label="Remove"
         title="Supprimer la ville"
         class="btn btn-outline-secondary btn-sm bi bi-x-lg"
         (click)="removeLocation(location.zipCode)">
+      </button>
+      <button type="button" aria-label="Remove"
+        title="Voir les prévisions pour la semaine"
+        class="btn btn-outline-secondary btn-sm bi bi-arrow-return-right"
+        (click)="openLocationWeek(location)">
       </button>
     </div>
   </div>
