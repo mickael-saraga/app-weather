@@ -22,13 +22,13 @@ export class HomeComponent implements OnInit {
   constructor(private weatherService: WeatherService) { }
 
   ngOnInit() {
-    const storedZipCodesString = localStorage.getItem(this.zipCodesKey);
+    const storedZipCodesString = sessionStorage.getItem(this.zipCodesKey);
     if (storedZipCodesString) {
       const storedZipCodes = storedZipCodesString.split(',');
       if (storedZipCodes.filter(code => code.length).length) {
         this.allZipCodes = storedZipCodes;
       } else {
-        localStorage.removeItem(this.zipCodesKey);
+        sessionStorage.removeItem(this.zipCodesKey);
       }
     }
   }
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   onLocationAdded(zipCode: string) {
     this.allZipCodes.unshift(zipCode);
-    localStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
+    sessionStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
   }
 
   clearLocationInput() {
@@ -59,11 +59,11 @@ export class HomeComponent implements OnInit {
   removeLocation(locationToRemove: Location) {
     this.locations = this.locations.filter((location: Location) => location.zipCode !== locationToRemove.zipCode);
     this.allZipCodes = this.allZipCodes.filter((code: string) => +code !== locationToRemove.zipCode);
-    localStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
+    sessionStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
   }
 
   removeAllLocations() {
-    localStorage.removeItem(this.zipCodesKey);
+    sessionStorage.removeItem(this.zipCodesKey);
     this.allZipCodes = [];
     this.locations = [];
   }
@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
     const foundIndex = this.allZipCodes.findIndex((zipCode: string) => zipCodeToRemove === +zipCode);
     if (foundIndex > -1) {
       this.allZipCodes.splice(foundIndex, 1);
-      localStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
+      sessionStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
     }
   }
 
