@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, Subject } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { LocationBuilder } from './location.builder.service';
@@ -37,7 +37,7 @@ export class WeatherService {
     return this.http.get(weatherURL + searchQuery) as Observable<WeatherResponse>;
   }
 
-  getLocationForecastData(zipCode: string): Observable<WeatherResponse | null> {
+  getLocationForecastData(zipCode: string): Observable<WeatherResponse> {
     let weatherURL = this.BASE_OPEN_WEATHER_URL
                    + '&lang=' + this.language
                    + '&units=' + this.units;
@@ -45,8 +45,8 @@ export class WeatherService {
     return this.http.get(weatherURL + searchQuery)
                     .pipe(
                       map((response) => ({ ...response, zip: zipCode })),
-                      catchError((error) => of(null))
-                    ) as Observable<WeatherResponse | null>;
+                      catchError((error) => of({ ...error.error, message: error.error.message }))
+                    ) as Observable<any>;
   }
 
   getLocationWeekForecastData(latitude: number, longitude: number): Observable<WeatherWeekResponse> {
@@ -68,14 +68,10 @@ export class WeatherService {
     return this.http.get(weather5ForecastURL + searchQuery);
   }
 
-  buildLocation(zipCode: string, weatherResponse: WeatherResponse): Location {
-    if (zipCode && weatherResponse) {
-      return (new LocationBuilder()).zipCode(+zipCode)
-                                    .setAll(weatherResponse)
-                                    .build();
-    }
-    return (new LocationBuilder()).zipCode(0)
-                                  .build();
+  buildLocation(weatherResponse: WeatherResponse, zipCode?: string): Location {
+    return (new LocationBuilder()).zipCode(weatherResponse.zip)
+                                      .setAll(weatherResponse)
+                                      .build();
   }
 
   submitLocationZipCode(newZipCode: string) {

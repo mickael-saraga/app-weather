@@ -21,10 +21,10 @@ export class LocationBuilder {
     //   weatherIcon: '0',
     //   weatherId: 0,
     // };
-    this.location = new Location(0);
+    this.location = new Location('0');
   }
   
-  public zipCode(zipCode: number): LocationBuilder {
+  public zipCode(zipCode: string): LocationBuilder {
     this.location.zipCode = zipCode;
     return this;
   }

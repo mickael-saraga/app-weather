@@ -10,11 +10,11 @@ import { Location } from "../../models/location.model";
 })
 export class LocationComponent {
   @Input() location: Location | undefined;
-  @Output() removeLocationAsked = new EventEmitter<number>();
+  @Output() removeLocationAsked = new EventEmitter<string>();
 
   constructor(private router: Router) { }
 
-  removeLocation(locationZipCode: number) {
+  removeLocation(locationZipCode: string) {
     event?.stopPropagation();
     this.removeLocationAsked.emit(locationZipCode);
   }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
 import { forkJoin, Subscription } from "rxjs";
 import { environment } from "../../../environments/environment";
@@ -11,43 +11,48 @@ import { WeatherService } from "../../services/weather.service";
   templateUrl: './locations.component.html',
   styleUrls: ['./locations.component.scss']
 })
-export class LocationsComponent implements OnInit, OnDestroy {
+export class LocationsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() zipCodes: string[] = [];
-  @Output() locationRemoved = new EventEmitter<number>();
+  @Output() locationRemoved = new EventEmitter<string>();
   @Output() locationAdded = new EventEmitter<string>();
   locations: Location[] = [];
   locationAdditionSubscription: Subscription = new Subscription();
   loading: boolean = false;
 
   constructor(private service: WeatherService,
-              private router: Router) { }
+              private router: Router,
+              private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit() {
       if (this.zipCodes) {
         this.loading = true;
-        this.buildAllLocations();
-      }
-      this.locationAdditionSubscription = this.service.locationToAdd$.subscribe((newZipCode) => {
-        this.service.getLocationForecastData(newZipCode).subscribe((locationResponse) => {
-          if (locationResponse) {
-            this.locations.unshift(this.service.buildLocation(newZipCode, locationResponse));
-            this.locationAdded.emit(newZipCode);
-          }
+        this.locationAdditionSubscription = this.service.locationToAdd$.subscribe((newZipCode) => {
+          this.changeDetector.markForCheck();
+          this.locationAdded.emit(newZipCode);
         });
-      });
+      }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    let zipCodesChanges = changes.zipCodes;
+    this.zipCodes = zipCodesChanges.currentValue;
+    this.buildAllLocations();
+    if (zipCodesChanges) {
+      if (!zipCodesChanges.previousValue && zipCodesChanges.currentValue && zipCodesChanges.currentValue.length) {
+        this.locationAdded.emit(zipCodesChanges.currentValue[0]);
+      }
+    }
   }
 
   buildAllLocations() {
     forkJoin(
       this.zipCodes.map((code) => this.service.getLocationForecastData(code))
     ).subscribe(
-      (weatherLocationsResponses: (WeatherResponse | null)[]) => {
-        weatherLocationsResponses.forEach((weatherResponse) => {
-          if (weatherResponse) {
-            this.locations.push(this.service.buildLocation(weatherResponse.zip, weatherResponse));
-          }
-        });
+      (weatherLocationsResponses: (WeatherResponse)[]) => {
+        this.locations = weatherLocationsResponses.filter((weatherResponse) => weatherResponse.cod === 200)
+                                                  .map((weatherResponse) => this.service.buildLocation(weatherResponse));
+        this.changeDetector.markForCheck();
         this.loading = false;
       },
       (error) => this.loading = false,
@@ -66,7 +71,7 @@ export class LocationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onRemoveLocationAsked(locationZipCode: number) {
+  onRemoveLocationAsked(locationZipCode: string) {
     if (locationZipCode) {
       const foundIndex = this.locations.findIndex((location: Location) => location.zipCode === locationZipCode);
       if (foundIndex > -1) {
@@ -77,6 +82,8 @@ export class LocationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.locationAdditionSubscription) {
       this.locationAdditionSubscription.unsubscribe();
+    }
   }
 }

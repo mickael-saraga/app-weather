@@ -12,7 +12,7 @@ export class Location {
     private _feelsLike?: number;
 
   constructor(
-    public zipCode: number,
+    public zipCode: string,
     // public name: string,
     // public temp: number,
     // public tempMin: number,
@@ -62,7 +62,7 @@ export class Location {
     return this._feelsLike;
   }
 
-  setZipCode(zipCode: number) {
+  setZipCode(zipCode: string) {
     this.zipCode = zipCode;
     return this;
   }

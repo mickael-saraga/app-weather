@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { LocationWeatherBuilder } from '../../services/location-weather-builder.service';
 import { Location } from '../../models/location.model';
 import { WeatherService } from '../../services/weather.service';
 
@@ -38,7 +37,6 @@ export class HomeComponent implements OnInit {
   }
 
   onLocationAdded(zipCode: string) {
-    this.allZipCodes.unshift(zipCode);
     sessionStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
   }
 
@@ -51,6 +49,7 @@ export class HomeComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     if (this.zipCodeValue && this.zipCodeValue.length && this.allZipCodes.indexOf(this.zipCodeValue) === -1) {
+      this.allZipCodes = [this.zipCodeValue, ... this.allZipCodes];
       this.weatherService.submitLocationZipCode(this.zipCodeValue);
     }
     this.clearLocationInput();
@@ -58,7 +57,7 @@ export class HomeComponent implements OnInit {
 
   removeLocation(locationToRemove: Location) {
     this.locations = this.locations.filter((location: Location) => location.zipCode !== locationToRemove.zipCode);
-    this.allZipCodes = this.allZipCodes.filter((code: string) => +code !== locationToRemove.zipCode);
+    this.allZipCodes = this.allZipCodes.filter((code: string) => code !== locationToRemove.zipCode);
     sessionStorage.setItem(this.zipCodesKey, this.allZipCodes.join());
   }
 
@@ -68,9 +67,8 @@ export class HomeComponent implements OnInit {
     this.locations = [];
   }
 
-  onLocationRemoved(zipCodeToRemove: number) {
-    // this.allZipCodes = this.allZipCodes.filter((code: string) => +code !== zipCodeToRemove);
-    const foundIndex = this.allZipCodes.findIndex((zipCode: string) => zipCodeToRemove === +zipCode);
+  onLocationRemoved(zipCodeToRemove: string) {
+    const foundIndex = this.allZipCodes.findIndex((zipCode: string) => zipCodeToRemove === zipCode);
     if (foundIndex > -1) {
       this.allZipCodes.splice(foundIndex, 1);
       sessionStorage.setItem(this.zipCodesKey, this.allZipCodes.join());

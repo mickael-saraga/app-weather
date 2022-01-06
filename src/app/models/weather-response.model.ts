@@ -40,5 +40,6 @@ export interface WeatherResponse {
   id: number,
   name: string,
   cod: number,
-  zip: string
+  zip: string,
+  message?: string
 }
